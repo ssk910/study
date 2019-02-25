@@ -24,6 +24,7 @@ import com.common.SkillImpl;
  *      - 없음. (시전자 자신에게 시전)
  */
 public class Heal extends SkillImpl {
+    private String name;            // 스킬 이름
     private Character caster;       // 시전자
     private Character target;       // 대상자
     private int requiredMp;         // 필요 MP
@@ -35,11 +36,12 @@ public class Heal extends SkillImpl {
      +--------------+
      */
     public Heal(Character caster) {
-        this(caster, null, 25, SkillType.ACTIVE);
+        this("힐", caster, null, 25, SkillType.ACTIVE);
     }
 
-    public Heal(Character caster, Character target, int requiredMp, SkillType skillType) {
-        super(caster, target, requiredMp, skillType);
+    public Heal(String name, Character caster, Character target, int requiredMp, SkillType skillType) {
+        super(name, caster, target, requiredMp, skillType);
+        this.name = name;
         this.caster = caster;
         this.target = target;
         this.requiredMp = requiredMp;
