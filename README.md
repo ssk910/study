@@ -1,6 +1,7 @@
 # study
 
-## description
+## Task 1
+### description
 아래 설명을 보고 해당 모델을 solid 원칙을 준수하여 개발해서 제출 하면 됨.
 업무시간에는 작업하지 말고 남는 시간에 작업하세요.
 소스는 github에 계정 생성해서 repository url을 결과를 제출 하면 됨.
