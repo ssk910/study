@@ -3,7 +3,7 @@ package com.common;
 /**
  * 종족
  */
-enum Species {
+public enum Species {
     HUMAN,
     ORC,
     ELF
