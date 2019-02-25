@@ -1,4 +1,4 @@
-package com.common.skill.commonSkill;
+package com.common.skill.common;
 
 import com.common.Character;
 import com.common.SkillImpl;
