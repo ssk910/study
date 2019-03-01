@@ -1,12 +1,13 @@
 package com.common.charClass;
 
-import com.common.*;
 import com.common.Character;
+import com.common.*;
+import com.common.skill.special.Invincible;
 
 /**
- * 첫 클래스
+ * 전사 클래스
  */
-public class Freshman extends CharClassImpl {
+public class Warrior extends CharClassImpl {
     private Character character;        // 캐릭터
     private Skill specialSkill;         // 특수 스킬
     private WeaponType availableWeapon; // 전용 무기
@@ -18,12 +19,11 @@ public class Freshman extends CharClassImpl {
      |  Constructor |
      +--------------+
      */
-    public Freshman(Character character, Species species) {
-        // 엘프의 경우 전용 무기로 활 세팅하는 로직 추가 필요.
-        this(character, null, null, 1, species);
+    public Warrior(Character character) {
+        this(character, new Invincible(character), WeaponType.SWORD, 99, Species.HUMAN);
     }
 
-    public Freshman(Character character, Skill specialSkill, WeaponType availableWeapon, int requiredLevel, Species requiredSpecies) {
+    public Warrior(Character character, Skill specialSkill, WeaponType availableWeapon, int requiredLevel, Species requiredSpecies) {
         super(character, specialSkill, availableWeapon, requiredLevel, requiredSpecies);
         this.character = character;
         this.specialSkill = specialSkill;
