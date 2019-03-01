@@ -25,43 +25,43 @@ public class SkillImpl implements Skill {
      |  Overridden Methods |
      +---------------------+
      */
-    public boolean casterExists() {
+    public boolean casterExists(Character caster) {
         return caster != null;
     }
 
-    public boolean targetExists() {
+    public boolean targetExists(Character target) {
         return target != null;
     }
 
-    public boolean castAvailable() {
+    public boolean castAvailable(Character caster, Character target) {
         return false;
     }
 
-    public boolean hasEnoughMp() {
+    public boolean hasEnoughMp(Character caster) {
         return caster.getMp() >= requiredMp;
     }
 
-    public void decreaseCasterMp() {
-        if (hasEnoughMp()) {
+    public void decreaseCasterMp(Character caster) {
+        if (hasEnoughMp(caster)) {
             caster.setMp(caster.getMp() - requiredMp);
         }
     }
 
-    public void affectToCaster() {
-        decreaseCasterMp();
+    public void affectToCaster(Character caster, Character target) {
+        decreaseCasterMp(caster);
     }
 
-    public void affectToTarget() {
+    public void affectToTarget(Character caster, Character target) {
 
     }
 
-    public void castSkill() {
-        if (!castAvailable()) {
+    public void castSkill(Character caster, Character target) {
+        if (!castAvailable(caster, target)) {
             return;
         }
 
-        affectToCaster();
-        affectToTarget();
+        affectToCaster(caster, target);
+        affectToTarget(caster, target);
     }
 
     /*
