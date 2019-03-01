@@ -16,6 +16,9 @@ public interface CharClass {
     /* 특정 클래스로 전직 가능 여부 */
     boolean canChangeClassTo(CharClass targetClass);
 
+    /* 전용 무기 */
+    WeaponType getAvailableWeapon();
+
     /* 전직 */
     void changeClass(CharClass targetClass);
 }
