@@ -1,14 +1,16 @@
-package com.common.skill.common;
+package com.common.skill.special;
 
 import com.common.CharacterImpl;
 import com.common.SkillImpl;
+import com.common.Weapon;
+import com.common.WeaponImpl;
 
 /**
  * [이름]
- *      분노
+ *      집중 사격
  *
  * [소모 MP]
- *      20
+ *      75
  *
  * [타입]
  *      액티브
@@ -18,34 +20,37 @@ import com.common.SkillImpl;
  *
  * [시전 조건]
  *      - 시전자 생존.
+ *      - 활 장착
  *
  * [시전자에 대한 효과]
  *      - MP 차감.
- *      - 방어력 20% 저하.
- *      - 공격력 30% 상승.
  *
  * [대상자에 대한 효과]
- *      - 없음. (시전자 자신에게 시전)
+ *      - 대상자를 50번 공격.
  */
-public class Fury extends SkillImpl {
+public class ConcentratedFire extends SkillImpl {
     private String name;            // 스킬 이름
+    private CharacterImpl caster;       // 시전자
+    private CharacterImpl target;       // 대상자
     private int requiredMp;         // 필요 MP
     private SkillType skillType;    // 스킬 타입
+    private int attackPower;        // 스킬 공격력
 
     /*
      +--------------+
      |  Constructor |
      +--------------+
      */
-    public Fury() {
-        this("분노", 20, SkillType.ACTIVE, 0);
+    public ConcentratedFire() {
+        this("집중 사격", 75, SkillType.ACTIVE, 0);
     }
 
-    public Fury(String name, int requiredMp, SkillType skillType, int skillAttackPower) {
-        super(name, requiredMp, skillType, skillAttackPower);
+    public ConcentratedFire(String name, int requiredMp, SkillType skillType, int attackPower) {
+        super(name, requiredMp, skillType, attackPower);
         this.name = name;
         this.requiredMp = requiredMp;
         this.skillType = skillType;
+        this.attackPower = attackPower;
     }
 
     /*
@@ -58,31 +63,33 @@ public class Fury extends SkillImpl {
      *      - 시전자가 존재 (null 아님)
      *      - MP
      *      - 시전자 생존
+     *      - 활 장착
      * @return
      */
     @Override
     public boolean castAvailable(CharacterImpl caster, CharacterImpl target) {
-        return super.casterExists(caster) && super.hasEnoughMp(caster) && caster.isAlive();
+        return super.casterExists(caster)
+                && super.hasEnoughMp(caster)
+                && caster.isAlive()
+                && caster.getWeapon().getWeaponType().equals(Weapon.WeaponType.BOW);
     }
 
     @Override
     public void affectToCaster(CharacterImpl caster, CharacterImpl target) {
-        int atk = caster.getAttackPower();
-        int def = caster.getDefensePower();
-
-        // 소수점 버림
-        int resultAtk = (int) (atk + atk * 0.3);
-        int resultDef = (int) (def - def * 0.2);
-
         super.affectToCaster(caster, target);
-        caster.setAttackPower(resultAtk);
-        caster.setDefensePower(resultDef);
     }
 
     @Override
     public void affectToTarget(CharacterImpl caster, CharacterImpl target) {
         super.affectToTarget(caster, target);
-        // Nothing affected to target
+
+        for (int i = 0; i < 50; i++) {
+            WeaponImpl weapon = caster.getWeapon();
+
+            if (weapon.getDurability() > 0) {
+                weapon.attack(caster, target);
+            }
+        }
     }
 
     @Override

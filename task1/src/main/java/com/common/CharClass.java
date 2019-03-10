@@ -5,20 +5,17 @@ package com.common;
  */
 public interface CharClass {
     /* 레벨 충족 여부 */
-    boolean checkLevel();
+    boolean checkLevel(CharacterImpl character);
 
     /* 종족 충족 여부 */
-    boolean checkSpecies();
+    boolean checkSpecies(CharacterImpl character);
 
     /* 전직 가능 여부 */
-    boolean canChangeClass();
+    boolean canChangeClass(CharacterImpl character);
 
     /* 특정 클래스로 전직 가능 여부 */
-    boolean canChangeClassTo(CharClass targetClass);
-
-    /* 전용 무기 */
-    WeaponType getAvailableWeapon();
+    boolean canChangeClassTo(CharacterImpl character, CharClassImpl targetClass);
 
     /* 전직 */
-    void changeClass(CharClass targetClass);
+    boolean changeClass(CharacterImpl character, CharClassImpl targetClass);
 }

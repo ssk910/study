@@ -4,9 +4,9 @@ import com.common.*;
 import com.common.skill.special.Invincible;
 
 /**
- * 전사 클래스
+ * 힐러 클래스
  */
-public class Warrior extends Freshman {
+public class Healer extends Freshman {
     private SkillImpl specialSkill;         // 특수 스킬
     private Weapon.WeaponType[] availableWeaponList; // 전용 무기
     private int requiredLevel;          // 전직시 필요 레벨
@@ -17,11 +17,11 @@ public class Warrior extends Freshman {
      |  Constructor |
      +--------------+
      */
-    public Warrior() {
-        this(new Invincible(), new Weapon.WeaponType[]{Weapon.WeaponType.SWORD, Weapon.WeaponType.AXE}, 99, Species.HUMAN);
+    public Healer() {
+        this(new Invincible(), new Weapon.WeaponType[]{Weapon.WeaponType.STAFF}, 99, Species.ELF);
     }
 
-    public Warrior(SkillImpl specialSkill, Weapon.WeaponType[] availableWeaponList, int requiredLevel, Species requiredSpecies) {
+    public Healer(SkillImpl specialSkill, Weapon.WeaponType[] availableWeaponList, int requiredLevel, Species requiredSpecies) {
         super(specialSkill, availableWeaponList, requiredLevel, requiredSpecies);
         this.specialSkill = specialSkill;
         this.availableWeaponList = availableWeaponList;

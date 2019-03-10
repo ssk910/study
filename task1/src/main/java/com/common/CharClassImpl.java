@@ -1,9 +1,8 @@
 package com.common;
 
 public class CharClassImpl implements CharClass {
-    private Character character;        // 캐릭터
-    private Skill specialSkill;         // 특수 스킬
-    private WeaponType availableWeapon; // 전용 무기
+    private SkillImpl specialSkill;         // 특수 스킬
+    private Weapon.WeaponType[] availableWeaponArr; // 전용 무기 리스트
     private int requiredLevel;          // 전직시 필요 레벨
     private Species requiredSpecies;    // 전직시 필요 종족
 
@@ -12,10 +11,9 @@ public class CharClassImpl implements CharClass {
      |  Constructor |
      +--------------+
      */
-    public CharClassImpl(Character character, Skill specialSkill, WeaponType availableWeapon, int requiredLevel, Species requiredSpecies) {
-        this.character = character;
+    public CharClassImpl(SkillImpl specialSkill, Weapon.WeaponType[] availableWeaponArr, int requiredLevel, Species requiredSpecies) {
         this.specialSkill = specialSkill;
-        this.availableWeapon = availableWeapon;
+        this.availableWeaponArr = availableWeaponArr;
         this.requiredLevel = requiredLevel;
         this.requiredSpecies = requiredSpecies;
     }
@@ -25,32 +23,65 @@ public class CharClassImpl implements CharClass {
      |  Overridden Methods |
      +---------------------+
      */
-    public boolean checkLevel() {
+    public boolean checkLevel(CharacterImpl character) {
         return (requiredLevel > 0) && (character.getLevel() >= requiredLevel);
     }
 
-    public boolean checkSpecies() {
+    public boolean checkSpecies(CharacterImpl character) {
         return character.getSpecies().equals(requiredSpecies);
     }
 
-    public boolean canChangeClass() {
-        return character.isAlive() && checkLevel() && checkSpecies();
+    public boolean canChangeClass(CharacterImpl character) {
+        return character.isAlive() && checkLevel(character) && checkSpecies(character);
     }
 
-    public boolean canChangeClassTo(CharClass targetClass) {
-        return canChangeClass() && (character.getClassChangeList().contains(targetClass));
+    public boolean canChangeClassTo(CharacterImpl character, CharClassImpl targetClass) {
+        return canChangeClass(character);
     }
 
-    public WeaponType getAvailableWeapon() {
-        return availableWeapon;
-    }
-
-    public void changeClass(CharClass targetClass) {
-        if (!canChangeClassTo(targetClass)) {
-            return;
+    public boolean changeClass(CharacterImpl character, CharClassImpl targetClass) {
+        if (!canChangeClassTo(character, targetClass)) {
+            return false;
         }
 
         character.setCharClass(targetClass);
-        character.setClassChangeList(null);
+        return true;
+    }
+
+    /*
+     +------------------+
+     |  Getter & Setter |
+     +------------------+
+     */
+    public SkillImpl getSpecialSkill() {
+        return specialSkill;
+    }
+
+    public void setSpecialSkill(SkillImpl specialSkill) {
+        this.specialSkill = specialSkill;
+    }
+
+    public Weapon.WeaponType[] getAvailableWeaponArr() {
+        return availableWeaponArr;
+    }
+
+    public void setAvailableWeaponArr(Weapon.WeaponType[] availableWeaponArr) {
+        this.availableWeaponArr = availableWeaponArr;
+    }
+
+    public int getRequiredLevel() {
+        return requiredLevel;
+    }
+
+    public void setRequiredLevel(int requiredLevel) {
+        this.requiredLevel = requiredLevel;
+    }
+
+    public Species getRequiredSpecies() {
+        return requiredSpecies;
+    }
+
+    public void setRequiredSpecies(Species requiredSpecies) {
+        this.requiredSpecies = requiredSpecies;
     }
 }

@@ -5,31 +5,31 @@ import com.common.WeaponImpl;
 
 /**
  * [이름]
- *      검
+ *      주먹
  *
  * [사거리]
- *      3
+ *      1
  *
  * [무기 종류]
- *      검
+ *      주먹
  *
  * [공격력]
- *      30
+ *      1
  *
  * [내구도]
- *      10
+ *      0 (공격 불가)
  */
-public class Sword extends WeaponImpl {
+public class Fist extends WeaponImpl {
     /*
      +--------------+
      |  Constructor |
      +--------------+
      */
-    public Sword() {
-        this("검", 3, WeaponType.SWORD, 30, 10);
+    public Fist() {
+        this("주먹", 1, WeaponType.FIST, 1, 0);
     }
 
-    public Sword(String name, int range, WeaponType weaponType, int weaponAttackPower, int durability) {
+    public Fist(String name, int range, WeaponType weaponType, int weaponAttackPower, int durability) {
         super(name, range, weaponType, weaponAttackPower, durability);
     }
 

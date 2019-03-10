@@ -1,6 +1,6 @@
 package com.common.skill.special;
 
-import com.common.Character;
+import com.common.CharacterImpl;
 import com.common.SkillImpl;
 
 /**
@@ -12,6 +12,9 @@ import com.common.SkillImpl;
  *
  * [타입]
  *      액티브
+ *
+ * [스킬 공격력]
+ *      0
  *
  * [시전 조건]
  *      - 시전자 생존.
@@ -25,8 +28,8 @@ import com.common.SkillImpl;
  */
 public class Invincible extends SkillImpl {
     private String name;            // 스킬 이름
-    private Character caster;       // 시전자
-    private Character target;       // 대상자
+    private CharacterImpl caster;       // 시전자
+    private CharacterImpl target;       // 대상자
     private int requiredMp;         // 필요 MP
     private SkillType skillType;    // 스킬 타입
 
@@ -35,15 +38,13 @@ public class Invincible extends SkillImpl {
      |  Constructor |
      +--------------+
      */
-    public Invincible(Character caster) {
-        this("무적", caster, null, 40, SkillType.ACTIVE);
+    public Invincible() {
+        this("무적", 40, SkillType.ACTIVE, 0);
     }
 
-    public Invincible(String name, Character caster, Character target, int requiredMp, SkillType skillType) {
-        super(name, caster, target, requiredMp, skillType);
+    public Invincible(String name, int requiredMp, SkillType skillType, int attackPower) {
+        super(name, requiredMp, skillType, attackPower);
         this.name = name;
-        this.caster = caster;
-        this.target = target;
         this.requiredMp = requiredMp;
         this.skillType = skillType;
     }
@@ -61,25 +62,25 @@ public class Invincible extends SkillImpl {
      * @return
      */
     @Override
-    public boolean castAvailable() {
-        return super.casterExists() && super.hasEnoughMp() && caster.isAlive();
+    public boolean castAvailable(CharacterImpl caster, CharacterImpl target) {
+        return super.casterExists(caster) && super.hasEnoughMp(caster) && caster.isAlive();
     }
 
     @Override
-    public void affectToCaster() {
+    public void affectToCaster(CharacterImpl caster, CharacterImpl target) {
         caster.setInvincible(true);
         caster.setInvincibleTime(10);
-        super.affectToCaster();
+        super.affectToCaster(caster, target);
     }
 
     @Override
-    public void affectToTarget() {
-        super.affectToTarget();
+    public void affectToTarget(CharacterImpl caster, CharacterImpl target) {
+        super.affectToTarget(caster, target);
         // Nothing affected to target
     }
 
     @Override
-    public void castSkill() {
-        super.castSkill();
+    public void castSkill(CharacterImpl caster, CharacterImpl target) {
+        super.castSkill(caster, target);
     }
 }

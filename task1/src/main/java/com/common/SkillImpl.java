@@ -2,22 +2,46 @@ package com.common;
 
 public class SkillImpl implements Skill {
     private String name;            // 스킬 이름
-    private Character caster;       // 시전자
-    private Character target;       // 대상자
     private int requiredMp;         // 필요 MP
     private SkillType skillType;    // 스킬 타입
+    private int skillAttackPower;        // 스킬 공격력
 
     /*
      +--------------+
      |  Constructor |
      +--------------+
      */
-    public SkillImpl(String name, Character caster, Character target, int requiredMp, SkillType skillType) {
+    public SkillImpl(String name, int requiredMp, SkillType skillType, int skillAttackPower) {
         this.name = name;
-        this.caster = caster;
-        this.target = target;
         this.requiredMp = requiredMp;
         this.skillType = skillType;
+        this.skillAttackPower = skillAttackPower;
+    }
+
+    /*
+     +------------------+
+     |  private Methods |
+     +------------------+
+     */
+    /* 시전자 MP 차감 */
+    private void decreaseCasterMp(CharacterImpl caster) {
+        if (hasEnoughMp(caster)) {
+            caster.setMp(caster.getMp() - requiredMp);
+        }
+    }
+
+    /* 대상자의 HP 감소 */
+    private void decreaseTargetHp(CharacterImpl target) {
+        if (targetExists(target)) {
+            // 공격 대상자 HP 결과
+            int targetResultHp = target.getHp() - skillAttackPower;
+            targetResultHp = (targetResultHp <= 0)
+                    ? 0
+                    : targetResultHp;
+
+            // HP 감소
+            target.setHp(targetResultHp);
+        }
     }
 
     /*
@@ -25,37 +49,31 @@ public class SkillImpl implements Skill {
      |  Overridden Methods |
      +---------------------+
      */
-    public boolean casterExists(Character caster) {
+    public boolean casterExists(CharacterImpl caster) {
         return caster != null;
     }
 
-    public boolean targetExists(Character target) {
+    public boolean targetExists(CharacterImpl target) {
         return target != null;
     }
 
-    public boolean castAvailable(Character caster, Character target) {
+    public boolean castAvailable(CharacterImpl caster, CharacterImpl target) {
         return false;
     }
 
-    public boolean hasEnoughMp(Character caster) {
+    public boolean hasEnoughMp(CharacterImpl caster) {
         return caster.getMp() >= requiredMp;
     }
 
-    public void decreaseCasterMp(Character caster) {
-        if (hasEnoughMp(caster)) {
-            caster.setMp(caster.getMp() - requiredMp);
-        }
-    }
-
-    public void affectToCaster(Character caster, Character target) {
+    public void affectToCaster(CharacterImpl caster, CharacterImpl target) {
         decreaseCasterMp(caster);
     }
 
-    public void affectToTarget(Character caster, Character target) {
-
+    public void affectToTarget(CharacterImpl caster, CharacterImpl target) {
+        decreaseTargetHp(target);
     }
 
-    public void castSkill(Character caster, Character target) {
+    public void castSkill(CharacterImpl caster, CharacterImpl target) {
         if (!castAvailable(caster, target)) {
             return;
         }
@@ -77,22 +95,6 @@ public class SkillImpl implements Skill {
         this.name = name;
     }
 
-    public Character getCaster() {
-        return caster;
-    }
-
-    public void setCaster(Character caster) {
-        this.caster = caster;
-    }
-
-    public Character getTarget() {
-        return target;
-    }
-
-    public void setTarget(Character target) {
-        this.target = target;
-    }
-
     public int getRequiredMp() {
         return requiredMp;
     }
@@ -107,5 +109,13 @@ public class SkillImpl implements Skill {
 
     public void setSkillType(SkillType skillType) {
         this.skillType = skillType;
+    }
+
+    public int getSkillAttackPower() {
+        return skillAttackPower;
+    }
+
+    public void setSkillAttackPower(int skillAttackPower) {
+        this.skillAttackPower = skillAttackPower;
     }
 }

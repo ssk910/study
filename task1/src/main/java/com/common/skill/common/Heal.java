@@ -1,6 +1,6 @@
 package com.common.skill.common;
 
-import com.common.Character;
+import com.common.CharacterImpl;
 import com.common.SkillImpl;
 
 /**
@@ -12,6 +12,9 @@ import com.common.SkillImpl;
  *
  * [타입]
  *      액티브
+ *
+ * [스킬 공격력]
+ *      0
  *
  * [시전 조건]
  *      - 시전자 생존.
@@ -25,8 +28,6 @@ import com.common.SkillImpl;
  */
 public class Heal extends SkillImpl {
     private String name;            // 스킬 이름
-    private Character caster;       // 시전자
-    private Character target;       // 대상자
     private int requiredMp;         // 필요 MP
     private SkillType skillType;    // 스킬 타입
 
@@ -35,15 +36,13 @@ public class Heal extends SkillImpl {
      |  Constructor |
      +--------------+
      */
-    public Heal(Character caster) {
-        this("힐", caster, null, 25, SkillType.ACTIVE);
+    public Heal() {
+        this("힐", 25, SkillType.ACTIVE, 0);
     }
 
-    public Heal(String name, Character caster, Character target, int requiredMp, SkillType skillType) {
-        super(name, caster, target, requiredMp, skillType);
+    public Heal(String name, int requiredMp, SkillType skillType, int skillAttackPower) {
+        super(name, requiredMp, skillType, skillAttackPower);
         this.name = name;
-        this.caster = caster;
-        this.target = target;
         this.requiredMp = requiredMp;
         this.skillType = skillType;
     }
@@ -61,12 +60,12 @@ public class Heal extends SkillImpl {
      * @return
      */
     @Override
-    public boolean castAvailable() {
-        return super.casterExists() && super.hasEnoughMp() && caster.isAlive();
+    public boolean castAvailable(CharacterImpl caster, CharacterImpl target) {
+        return super.casterExists(caster) && super.hasEnoughMp(caster) && caster.isAlive();
     }
 
     @Override
-    public void affectToCaster() {
+    public void affectToCaster(CharacterImpl caster, CharacterImpl target) {
         int maxHp = caster.getMaxHp();
         int currentHp = caster.getHp();
         int healedHp = 40;
@@ -74,18 +73,18 @@ public class Heal extends SkillImpl {
                 ? maxHp
                 : (currentHp + healedHp);
 
-        super.affectToCaster();
+        super.affectToCaster(caster, target);
         caster.setHp(resultHp);
     }
 
     @Override
-    public void affectToTarget() {
-        super.affectToTarget();
+    public void affectToTarget(CharacterImpl caster, CharacterImpl target) {
+        super.affectToTarget(caster, target);
         // Nothing affected to target
     }
 
     @Override
-    public void castSkill() {
-        super.castSkill();
+    public void castSkill(CharacterImpl caster, CharacterImpl target) {
+        super.castSkill(caster, target);
     }
 }
